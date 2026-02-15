@@ -5,8 +5,7 @@ import stuff.CollectionHandler;
 public class ShowCommand implements Command{
     public String desc() {return "show the contents of the HashMap";}
 
-    @Override
-    public void execute() {
+    public void execute(String... args) {
         CollectionHandler.show();
     }
 }

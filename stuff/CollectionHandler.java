@@ -20,13 +20,16 @@ import java.util.HashSet;
 
 public class CollectionHandler { //implements Comparable
     static HashSet<Route> routes = new HashSet<>();
+    static java.time.LocalDateTime initTime = java.time.LocalDateTime.now();
 
     public static void clear() {
         routes.clear();
     }
 
     public static void show() {
-        System.out.println(routes);
+        for (Route r: routes) {
+            System.out.println(r);
+        }
     }
     //show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении
 
@@ -37,7 +40,12 @@ public class CollectionHandler { //implements Comparable
     // добавление должно поэтапно запонлять каждое поле.
     // логику возможно кинуть в новый класс
 
-    public static void remove_by_id() {}
+    public static void remove_by_id(Long id) {
+        Route r = find_by_id(id);
+        if (r != null) { routes.remove(r);
+        System.out.printf("Removed route %s\n", r);
+        }
+    }
     //remove_by_id id : удалить элемент из коллекции по его id
 
     public static void update_id() {}
@@ -64,4 +72,26 @@ public class CollectionHandler { //implements Comparable
 
     public static void remove_greater() {}
     //remove_greater {element} : удалить из коллекции все элементы, превышающие заданный
+
+    public static void more(long id) {
+        Route r = find_by_id(id);
+        if (r != null) {System.out.println(r.more());}
+    }
+
+    private static Route find_by_id(Long id) {
+        for (Route r: routes) {
+            if (r.getId().equals(id)) {
+                return r;
+            }
+        }
+        System.out.printf("No Route with id '%s' found.\n", id);
+        return null;
+    }
+
+    public static void info() {
+        System.out.printf(" Collection type: %s\n" +
+                          " Current size: %s\n" +
+                          " Initialization time: %s\n" +
+                          " Coolness: 100\n", routes.getClass(), routes.size(), initTime);
+    }
 }
