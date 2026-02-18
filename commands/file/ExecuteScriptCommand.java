@@ -1,8 +1,13 @@
-package commands;
+package commands.file;
 
-import stuff.Message;
+import commands.Command;
+import commands.Invoker;
+import handlers.InputHandler;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -18,7 +23,7 @@ public class ExecuteScriptCommand implements Command {
         try {
             Reader in = new InputStreamReader(new FileInputStream(args[0]), StandardCharsets.UTF_8);
             Scanner sc = new Scanner(in);
-            Message.sc = sc;
+            InputHandler.sc = sc;
             while (sc.hasNext()) {
                 String[] inp = sc.nextLine().strip().split(" ");
                 String commandName = inp[0];
@@ -31,7 +36,7 @@ public class ExecuteScriptCommand implements Command {
         } catch (FileNotFoundException e) {
             System.out.println("File not found.");
         } finally {
-            Message.sc = new Scanner(System.in);
+            InputHandler.sc = new Scanner(System.in);
         }
 
     }

@@ -1,6 +1,8 @@
-package commands;
+package commands.extra;
 
-public class PSZHCommand implements Command{
+import commands.Command;
+
+public class PSZHCommand implements Command {
     @Override
     public String desc() {
         return "ПСЖ";

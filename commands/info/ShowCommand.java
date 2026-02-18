@@ -1,8 +1,9 @@
-package commands;
+package commands.info;
 
-import stuff.CollectionHandler;
+import commands.Command;
+import handlers.CollectionHandler;
 
-public class ShowCommand implements Command{
+public class ShowCommand implements Command {
     public String desc() {return "show the contents of the HashMap";}
 
     public void execute(String... args) {

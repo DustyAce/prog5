@@ -1,8 +1,9 @@
-package commands;
+package commands.info;
 
-import stuff.CollectionHandler;
+import commands.Command;
+import handlers.CollectionHandler;
 
-public class FilterNameCommand implements Command{
+public class FilterNameCommand implements Command {
     @Override
     public String desc() {
         return "output all Routes w/ names containing {pattern}";

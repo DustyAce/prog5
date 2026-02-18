@@ -1,8 +1,9 @@
-package commands;
+package commands.basic;
 
-import stuff.CollectionHandler;
+import commands.Command;
+import handlers.CollectionHandler;
 
-public class RemoveCommand implements Command{
+public class RemoveCommand implements Command {
     public String desc() { return "removes Route with specified {id}"; }
 
     public void execute(String... args) {

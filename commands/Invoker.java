@@ -1,4 +1,11 @@
 package commands;
+
+import commands.basic.*;
+import commands.comparing.*;
+import commands.extra.*;
+import commands.file.*;
+import commands.info.*;
+
 import java.util.ArrayDeque;
 import java.util.HashMap;
 
@@ -22,14 +29,14 @@ public class Invoker {
 
 
         // Cyclical collection manip
-        //commands.put("add_if_min", new AddIfMinCommand());
-        //commands.put("remove_greater", new RemoveGreaterCommand());
+        commands.put("add_if_min", new AddMinCommand());
+        commands.put("remove_greater", new RemoveGreaterCommand());
         commands.put("filter_contains_name", new FilterNameCommand());
-        //commands.put("print_ascending", new PrintAscendingCommand());
+        commands.put("print_ascending", new PrintAscendingCommand());
         commands.put("print_unique_distance", new UniqueDistanceCommand());
 
         // File stuff
-        //commands.put("save", new SaveCommand());
+        commands.put("save", new SaveCommand());
         commands.put("execute_script", new ExecuteScriptCommand());
 
         // Unnecessary/debug
@@ -49,6 +56,14 @@ public class Invoker {
         if (history.size() > 15) {
             history.removeFirst();
         }
+    }
+
+    public static ArrayDeque<String> getHistory() {
+        return history;
+    }
+
+    public static HashMap<String, Command> getCommands() {
+        return commands;
     }
 
 

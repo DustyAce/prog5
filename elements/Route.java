@@ -1,6 +1,8 @@
-package stuff;
+package elements;
 
-public class Route {
+import handlers.InputHandler;
+
+public class Route implements Comparable<Route> {
     public static Long instanceCounter = 0L;
     private Long id; //[+] Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //[+] Поле не может быть null, Строка не может быть пустой
@@ -10,22 +12,22 @@ public class Route {
     private Location to; //[+] Поле может быть null
     private Long distance; //[+] Поле не может быть null, Значение поля должно быть больше 1
 
-    Route() {
+    public Route() {
         this.id = Route.instanceCounter++;
         this.creationDate = java.time.LocalDateTime.now();
 
-        this.name = Message.stringInput("Route name", false);
+        this.name = InputHandler.stringInput("Route name", false);
 
         System.out.println("Coordinates:");
         this.coordinates = new Coordinates();
 
-        if (Message.ynPrompt("Add 'from' Location?")) { this.from = new Location(); }
-        if (Message.ynPrompt("Add 'to' Location?")) { this.from = new Location(); }
+        if (InputHandler.ynPrompt("Add 'from' Location?")) { this.from = new Location(); }
+        if (InputHandler.ynPrompt("Add 'to' Location?")) { this.from = new Location(); }
 
-        this.distance = Message.longInput("distance", false, null, null);
+        this.distance = InputHandler.longInput("distance", false, null, null);
 
 
-        System.out.println("-- New Route created!");
+        System.out.printf("-- New Route '%s' created!\n", this.name);
     }
 
     public Long getId() {
@@ -48,15 +50,24 @@ public class Route {
                         "3. (Location) from\n" +
                         "4. (Location) to\n" +
                         "5. distance");
-        int n = Message.intInput("number", false, 6, 0);
+        int n = InputHandler.intInput("number", false, 6, 0);
         switch (n) {
-            case 1 -> this.name = Message.stringInput("name", false);
+            case 1 -> this.name = InputHandler.stringInput("name", false);
             case 2 -> this.coordinates = new Coordinates();
             case 3 -> this.from = new Location();
             case 4 -> this.to = new Location();
-            case 5 -> this.distance = Message.longInput("distance", false, null, null);
+            case 5 -> this.distance = InputHandler.longInput("distance", false, null, null);
         }
         System.out.println("Updated!");
+    }
+
+
+    @Override
+    public int compareTo(Route o) {
+        return Long.compare(this.distance, o.distance);
+        //can't really do this via IDs
+        //because add_if_min becomes pointless
+        //(well technically I could but it would require making routes with HIGHER ids less)
     }
 
     @Override

@@ -1,4 +1,6 @@
-package commands;
+package commands.extra;
+
+import commands.Command;
 
 public class EchoCommand implements Command {
     public String desc() {

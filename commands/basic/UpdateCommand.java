@@ -1,8 +1,9 @@
-package commands;
+package commands.basic;
 
-import stuff.CollectionHandler;
+import commands.Command;
+import handlers.CollectionHandler;
 
-public class UpdateCommand implements Command{
+public class UpdateCommand implements Command {
     @Override
     public String desc() {
         return "update an element with {id}";

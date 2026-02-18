@@ -1,8 +1,9 @@
-package commands;
+package commands.extra;
 
-import stuff.CollectionHandler;
+import commands.Command;
+import handlers.CollectionHandler;
 
-public class MoreCommand implements Command{
+public class MoreCommand implements Command {
     public String desc() {
         return "Route info with specified {id}";
     }

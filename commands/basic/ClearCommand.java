@@ -1,8 +1,9 @@
-package commands;
+package commands.basic;
 
-import stuff.CollectionHandler;
+import commands.Command;
+import handlers.CollectionHandler;
 
-public class ClearCommand implements Command{
+public class ClearCommand implements Command {
     @Override
     public String desc() {
         return "clear all data";

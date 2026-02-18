@@ -1,8 +1,9 @@
-package commands;
+package commands.info;
 
-import stuff.CollectionHandler;
+import commands.Command;
+import handlers.CollectionHandler;
 
-public class UniqueDistanceCommand implements Command{
+public class UniqueDistanceCommand implements Command {
     @Override
     public String desc() {
         return "output a list of unique distance values";

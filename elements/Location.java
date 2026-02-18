@@ -1,4 +1,6 @@
-package stuff;
+package elements;
+
+import handlers.InputHandler;
 
 public class Location {
     private Long x;
@@ -7,10 +9,10 @@ public class Location {
     private String name = ""; //Строка не может быть пустой, Поле не может быть null
 
     Location() {
-        this.x = Message.longInput("Location x", true, null, null);
-        this.y = Message.floatInput("Location y", false, null, null);
-        this.z = Message.floatInput("Location z", false, null, null);
-        this.name = Message.stringInput("Location name", false);
+        this.x = InputHandler.longInput("Location x", true, null, null);
+        this.y = InputHandler.floatInput("Location y", false, null, null);
+        this.z = InputHandler.floatInput("Location z", false, null, null);
+        this.name = InputHandler.stringInput("Location name", false);
     }
 
     @Override

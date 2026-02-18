@@ -1,17 +1,17 @@
-package stuff;
+package handlers;
 
 import java.util.Scanner;
 
-public class Message {
+public class InputHandler {
 
     public static Scanner sc = new Scanner(System.in);
 
-    static boolean ynPrompt(String question) {
+    public static boolean ynPrompt(String question) {
         System.out.print(question + " (y/N)\n>>> ");
         return sc.nextLine().strip().equalsIgnoreCase("y");
     }
 
-    static String stringInput(String varName, boolean isNullable) {
+    public static String stringInput(String varName, boolean isNullable) {
         String ret;
 
         System.out.print("Input " + varName + "\n>>> ");
@@ -27,7 +27,7 @@ public class Message {
         }
     }
 
-    static Long longInput(String varName, boolean isNullable, Long upperBound, Long lowerBound) {
+    public static Long longInput(String varName, boolean isNullable, Long upperBound, Long lowerBound) {
         boolean badInput = true;
         long ret = 0L;
 
@@ -56,7 +56,7 @@ public class Message {
         return ret;
     }
 
-    static Integer intInput(String varName, boolean isNullable, Integer upperBound, Integer lowerBound) {
+    public static Integer intInput(String varName, boolean isNullable, Integer upperBound, Integer lowerBound) {
         boolean badInput = true;
         int ret = 0;
 
@@ -85,7 +85,7 @@ public class Message {
         return ret;
     }
 
-    static Float floatInput(String varName, boolean isNullable, Float upperBound, Float lowerBound) {
+    public static Float floatInput(String varName, boolean isNullable, Float upperBound, Float lowerBound) {
         boolean badInput = true;
         float ret = 0f;
 
@@ -113,6 +113,4 @@ public class Message {
         }
         return ret;
     }
-
-
 }

@@ -1,21 +1,12 @@
-package stuff;
+package handlers;
 
+import elements.Route;
+
+import java.util.Arrays;
 import java.util.HashSet;
 
-//done
-//help : вывести справку по доступным командам
-//exit : завершить программу (без сохранения в файл)
-
-
 //todo:
-//clear : очистить коллекцию
 //save : сохранить коллекцию в файл
-//execute_script file_name : считать и исполнить скрипт из указанного файла.
-//В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.
-//info : вывести в стандартный поток вывода информацию о коллекции
-//(тип, дата инициализации, количество элементов и т.д.)
-//history : вывести последние 15 команд (без их аргументов)
-// probably should be some static Command/Invoker magic or some shit
 
 
 public class CollectionHandler { //implements Comparable
@@ -31,14 +22,10 @@ public class CollectionHandler { //implements Comparable
             System.out.println(r);
         }
     }
-    //show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении
 
     public static void add() {
         routes.add(new Route());
     }
-    //add {element} : добавить новый элемент в коллекцию
-    // добавление должно поэтапно запонлять каждое поле.
-    // логику возможно кинуть в новый класс
 
     public static void remove_by_id(Long id) {
         Route r = find_by_id(id);
@@ -46,19 +33,23 @@ public class CollectionHandler { //implements Comparable
         System.out.printf("Removed route %s\n", r);
         }
     }
-    //remove_by_id id : удалить элемент из коллекции по его id
 
     public static void update_id(Long id) {
         Route r = find_by_id(id);
         if (r == null) {return;}
         r.update();
     }
-    //update id {element} : обновить значение элемента коллекции, id которого равен заданному
-    // уже вторая ф-ция юзает id
-    // вынести логику нахождения по id в отдельный класс?
-    // если хэшсет такого не реализовывает??
 
-    public static void add_if_min() {}
+    public static void add_if_min(Route newRoute) {
+        for (Route r: routes) {
+            if (newRoute.compareTo(r) > 0) {
+                System.out.println("Route wasn't added, isn't min.");
+                return;
+            }
+        }
+        routes.add(newRoute);
+        System.out.println("Route added!");
+    }
     //add_if_min {element} : добавить новый элемент в коллекцию,
     //если его значение меньше, чем у наименьшего элемента этой коллекции
     // очевидно вызывать add после проверки
@@ -72,7 +63,13 @@ public class CollectionHandler { //implements Comparable
     }
 
 
-    public static void print_ascending() {}
+    public static void print_ascending() {
+        Route[] sorted_routes = routes.toArray(new Route[routes.size()]);
+        Arrays.sort(sorted_routes);
+        for (Route r: sorted_routes) {
+            System.out.println(r);
+        }
+    }
     //print_ascending : вывести элементы коллекции в порядке возрастания
 
     public static void print_unique_distance() {
@@ -84,7 +81,20 @@ public class CollectionHandler { //implements Comparable
     }
 
 
-    public static void remove_greater() {}
+    public static void remove_greater(Route newRoute) {
+        HashSet<Route> toRemove = new HashSet<>();
+        for (Route r: routes) {
+            if (newRoute.compareTo(r) < 0) {
+                toRemove.add(r);
+
+            }
+        }
+        for (Route r: toRemove) {
+            routes.remove(r);
+            System.out.printf("Route '%s' removed.\n", r);
+        }
+        toRemove.clear();
+    }
     //remove_greater {element} : удалить из коллекции все элементы, превышающие заданный
 
     public static void more(long id) {
@@ -107,5 +117,9 @@ public class CollectionHandler { //implements Comparable
                           " Current size: %s\n" +
                           " Initialization time: %s\n" +
                           " Coolness: 100\n", routes.getClass(), routes.size(), initTime);
+    }
+
+    public static HashSet<Route> getRoutes() {
+        return routes;
     }
 }

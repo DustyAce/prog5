@@ -1,6 +1,7 @@
-package commands;
+package commands.info;
 
-import stuff.CollectionHandler;
+import commands.Command;
+import handlers.CollectionHandler;
 
 public class InfoCommand implements Command {
     @Override
