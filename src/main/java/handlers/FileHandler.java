@@ -11,9 +11,11 @@ import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Scanner;
 
-
+/**
+ * Handler for file IO
+ */
 public class FileHandler {
-    static String saveLocation = "save";
+    static private String saveLocation = "save";
     static {
         String tmp = System.getenv("PROG_5_SAVE");
         //System.out.println(tmp);
@@ -29,11 +31,12 @@ public class FileHandler {
         try {
             File f = new File(saveLocation);
             if (f.exists()) { f.delete(); }
+            f.getParentFile().mkdirs();
             f.createNewFile();
-            String out = "";
+            StringBuilder out = new StringBuilder();
             for (Route r: routes) {
-                out += xm.writeValueAsString(r);
-                out += "\n";
+                out.append(xm.writeValueAsString(r));
+                out.append("\n");
             }
             PrintWriter pw = new PrintWriter(f);
             pw.print(out);
@@ -42,9 +45,9 @@ public class FileHandler {
         } catch (JsonProcessingException e) {
             System.out.println("uhh bad file somehow");
         } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            System.out.println("save file not found"); //how.
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("IO fail");
         }
     }
 
@@ -74,13 +77,14 @@ public class FileHandler {
                 Long tmpId = r.getId();
                 maxId = (tmpId > maxId) ? tmpId : maxId;
             }
+            CollectionHandler.setRoutes(out);
+            Route.updateInstanceCounter(maxId+1);
+            System.out.println("Successfully loaded!");
+            if (out.isEmpty()) {System.out.println("Warning: save file was empty.");}
         } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
+                System.out.println("Save file corrupt!");
         } finally { Route.isLoading = false; }
-        CollectionHandler.setRoutes(out);
-        Route.updateInstanceCounter(maxId+1);
-        System.out.println("Successfully loaded!");
-        if (out.isEmpty()) {System.out.println("Warning: save file was empty.");}
+
 
 
     }

@@ -8,11 +8,10 @@ public class EchoCommand implements Command {
     }
 
     public void execute(String... args) {
-        String out = "";
+        StringBuilder out = new StringBuilder();
         for (String a : args) {
-            out += (a + " ");
+            out.append(a).append(" ");
         }
         System.out.println(out);
-        return;
     }
 }

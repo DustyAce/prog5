@@ -1,5 +1,6 @@
 package handlers;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 /**
@@ -92,7 +93,7 @@ public class InputHandler {
     public static Integer intInput(String varName, boolean isNullable, Integer upperBound, Integer lowerBound) {
         boolean badInput = true;
         int ret = 0;
-
+        
         String request = "Input " + varName;
         request += ": [int ";
         if (!isNullable || upperBound != null || lowerBound != null) {
@@ -117,6 +118,7 @@ public class InputHandler {
         }
         return ret;
     }
+
 
     /**
      * Prompts the user to enter a Float

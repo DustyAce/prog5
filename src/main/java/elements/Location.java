@@ -1,15 +1,20 @@
 package elements;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import handlers.InputHandler;
 
 /**
  * Location class
  */
 public class Location {
-    public Long x;
-    public Float y; //Поле не может быть null
-    public Float z; //Поле не может быть null
-    public String name = ""; //Строка не может быть пустой, Поле не может быть null
+    @JacksonXmlProperty
+    private Long x;
+    @JacksonXmlProperty
+    private Float y; //Поле не может быть null
+    @JacksonXmlProperty
+    private Float z; //Поле не может быть null
+    @JacksonXmlProperty
+    private String name = ""; //Строка не может быть пустой, Поле не может быть null
 
     Location() {
         if (Route.isLoading) {return;}

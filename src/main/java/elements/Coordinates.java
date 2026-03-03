@@ -1,13 +1,17 @@
 package elements;
 
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import handlers.InputHandler;
 
 /**
  * Coordinates class
  */
 public class Coordinates{
-    public Integer x; //Максимальное значение поля: 926
-    public Float y;//Значение поля должно быть больше -974, Поле не может быть null
+    @JacksonXmlProperty
+    private Integer x; //Максимальное значение поля: 926
+    @JacksonXmlProperty
+    private Float y;//Значение поля должно быть больше -974, Поле не может быть null
+
     public Coordinates() {
         if (Route.isLoading) {return;}
         Integer tmp = InputHandler.intInput("x", true, 927, null);
@@ -17,6 +21,6 @@ public class Coordinates{
 
     @Override
     public String toString() {
-        return String.format("x: %d y:%f", x, y);
+        return String.format("x: %d y: %f", x, y);
     }
 }
