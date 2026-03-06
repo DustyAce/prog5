@@ -46,7 +46,7 @@ public class CollectionHandler { //implements Comparable
         Route r = find_by_id(id);
         if (r != null) {
             routes.remove(r);
-            System.out.printf("Removed route %s\n", r);
+            //System.out.printf("Removed route %s\n", r); TODO: add OutputHandler with an option to suppress output
         }
     }
 
@@ -74,6 +74,10 @@ public class CollectionHandler { //implements Comparable
         }
         routes.add(newRoute);
         System.out.println("Route added!");
+    }
+
+    public static void add(Route... newRoutes) {
+        routes.addAll(Arrays.asList(newRoutes));
     }
 
     /**

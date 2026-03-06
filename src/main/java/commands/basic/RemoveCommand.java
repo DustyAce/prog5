@@ -1,6 +1,7 @@
 package commands.basic;
 
 import commands.Command;
+import elements.Route;
 import handlers.CollectionHandler;
 
 public class RemoveCommand implements Command {
@@ -18,5 +19,12 @@ public class RemoveCommand implements Command {
         return;
         }
         CollectionHandler.remove_by_id(id);
+    }
+
+    @Override
+    public void undo(Route... routes) {
+        if (routes.length == 1) {
+            CollectionHandler.add(routes[0]);
+        } else { System.out.println("rm.undo failed, bad argument");}
     }
 }

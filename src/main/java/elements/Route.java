@@ -1,11 +1,22 @@
 package elements;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import handlers.InputHandler;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Route class - main class of the collection
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Route implements Comparable<Route> {
 
     public static boolean isLoading = false;
@@ -15,8 +26,13 @@ public class Route implements Comparable<Route> {
     private String name;
     //[+] Поле не может быть null, Строка не может быть пустой
     @JacksonXmlProperty(isAttribute = true)
-    private Coordinates coordinates; //[+] Поле не может быть null
-    private java.time.LocalDateTime creationDate; //[+] Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private Coordinates coordinates; //[+]
+
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm.SSS")
+    //DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE;
+    //@JsonDeserialize(using = dtf)
+    @JacksonXmlProperty(isAttribute = true)
+    private LocalDateTime creationDate; //[+] Поле не может быть null, Значение этого поля должно генерироваться автоматически
     @JacksonXmlProperty(isAttribute = true)
     private Location from; //[+] Поле может быть null
     @JacksonXmlProperty(isAttribute = true)
@@ -38,10 +54,23 @@ public class Route implements Comparable<Route> {
         if (InputHandler.ynPrompt("Add 'from' Location?")) { this.from = new Location(); }
         if (InputHandler.ynPrompt("Add 'to' Location?")) { this.from = new Location(); }
 
-        this.distance = InputHandler.longInput("distance", false, null, null);
+        this.distance = InputHandler.longInput("distance", false, null, 1L);
 
 
         System.out.printf("-- New Route '%s' created!\n", this.name);
+    }
+
+    public boolean validate() {
+        boolean r = (id != null
+                && !name.isBlank()
+                && coordinates != null
+                && coordinates.validate()
+                && creationDate != null
+                && (from == null ? true : from.validate())
+                && (to == null ? true : to.validate())
+                && (distance != null ? distance > 1 : false)
+                );
+        return r;
     }
 
     /**
@@ -106,19 +135,20 @@ public class Route implements Comparable<Route> {
 
     @Override
     public String toString() {
-        return String.format("%s: %s", this.id, this.name);
+        return String.format("%s: %s (%s)", this.id, this.name, this.distance);
     }
 
     /**
      * @return A more detailed String representation of Route object
      */
     public String more() {
-        return String.format("id%s - '%s'\n Coordinates: %s\n from: %s\n to: %s\n distance:%s",
+        return String.format("id: %s\n name: '%s'\n Coordinates: %s\n from: %s\n to: %s\n distance:%s\n created:%s",
                 this.id, this.name,
                 this.coordinates,
                 this.from,
                 this.to,
-                this.distance);
+                this.distance,
+                this.creationDate);
     }
 
 

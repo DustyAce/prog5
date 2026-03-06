@@ -19,6 +19,12 @@ public class Coordinates{
         this.y = InputHandler.floatInput("y", false, null, -974f);
     }
 
+    boolean validate() {
+        return ( x != null? x<927 : true
+                && y != null
+                && y > -974);
+    }
+
     @Override
     public String toString() {
         return String.format("x: %d y: %f", x, y);

@@ -24,8 +24,9 @@ public class ExecuteScriptCommand implements Command {
     public void execute(String... args) {
         Invoker.historyWritable = false;
 
-        if (recursionDepth >= 10) {
+        if (recursionDepth >= 100) {
             System.out.println("Recursion depth reached! Returning.");
+            recursionDepth = 0;
             return;
         }
 
@@ -50,6 +51,5 @@ public class ExecuteScriptCommand implements Command {
             Invoker.historyWritable = true;
             recursionDepth--;
         }
-
     }
 }

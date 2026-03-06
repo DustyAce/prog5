@@ -1,6 +1,7 @@
 package commands.basic;
 
 import commands.Command;
+import elements.Route;
 import handlers.CollectionHandler;
 
 public class UpdateCommand implements Command {
@@ -22,5 +23,12 @@ public class UpdateCommand implements Command {
             return;
         }
         CollectionHandler.update_id(id);
+    }
+
+    @Override
+    public void undo(Route... routes) {
+        Route r = routes[0];
+        CollectionHandler.remove_by_id(r.getId());
+        CollectionHandler.add(r);
     }
 }

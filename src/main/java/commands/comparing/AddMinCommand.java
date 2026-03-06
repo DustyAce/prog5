@@ -14,4 +14,11 @@ public class AddMinCommand implements Command {
     public void execute(String... args) {
         CollectionHandler.add_if_min(new Route());
     }
+
+    @Override
+    public void undo(Route... routes) {
+        if (routes.length == 1) {
+            CollectionHandler.remove_by_id(routes[0].getId());
+        }
+    }
 }

@@ -11,16 +11,22 @@ import commands.file.ExecuteScriptCommand;
 import commands.file.LoadCommand;
 import commands.file.SaveCommand;
 import commands.info.*;
+import elements.Route;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Class responsible for executing commands
  */
 public class Invoker {
     static HashMap<String, Command> commands = new HashMap<>();
-    static ArrayDeque<String> history = new ArrayDeque<>();
+    static ArrayDeque<String> history_old = new ArrayDeque<>();
+
+    static Stack<HistoryEntry> history = new Stack<>();
+    static Stack<HistoryEntry> undoHistory = new Stack<>();
+
     public static boolean historyWritable = true;
 
     static {
@@ -74,18 +80,22 @@ public class Invoker {
     private static void addToHistory(String name) {
         if (!historyWritable) {return;} // stops execute_script commands from being added
 
-        history.add(name);
-        if (history.size() > 15) {
-            history.removeFirst();
+        history_old.add(name);
+        if (history_old.size() > 15) {
+            history_old.removeFirst();
         }
+    }
+
+    private static void addToHistory(Command c, Route... r) {
+        history.push(new HistoryEntry(c, r));
     }
 
     /**
      * Returns history
      * @return a list of last 15 commands
      */
-    public static ArrayDeque<String> getHistory() {
-        return history;
+    public static ArrayDeque<String> getHistory_old() {
+        return history_old;
     }
 
     /**

@@ -14,4 +14,9 @@ public class RemoveGreaterCommand implements Command {
     public void execute(String... args) {
         CollectionHandler.remove_greater(new Route());
     }
+
+    @Override
+    public void undo(Route... routes) {
+        CollectionHandler.add(routes);
+    }
 }

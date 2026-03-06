@@ -1,7 +1,9 @@
 package handlers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import elements.Route;
 
 import java.io.File;
@@ -28,10 +30,16 @@ public class FileHandler {
      */
     public static void save(HashSet<Route> routes) {
         XmlMapper xm = new XmlMapper();
+        xm = XmlMapper.builder()
+                .findAndAddModules()
+                .build();
+        xm.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
         try {
             File f = new File(saveLocation);
             if (f.exists()) { f.delete(); }
-            f.getParentFile().mkdirs();
+            File parent = f.getParentFile();
+            if (parent != null) {parent.mkdirs();}
             f.createNewFile();
             StringBuilder out = new StringBuilder();
             for (Route r: routes) {
@@ -58,7 +66,11 @@ public class FileHandler {
         Scanner sc;
         HashSet<Route> out = new HashSet<>();
         XmlMapper xm = new XmlMapper();
-
+        //xm.registerModule(new JavaTimeModule());
+        xm = XmlMapper.builder()
+                .findAndAddModules()
+                .build();
+        xm.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         try {
             sc = new Scanner(new File(saveLocation));
         } catch (FileNotFoundException e) {
@@ -73,15 +85,21 @@ public class FileHandler {
         try {
             while (sc.hasNext()) {
                 Route r = xm.readValue(sc.nextLine(), Route.class);
-                out.add(r);
-                Long tmpId = r.getId();
-                maxId = (tmpId > maxId) ? tmpId : maxId;
+                if (r.validate()) {
+                    out.add(r);
+                    Long tmpId = r.getId();
+                    maxId = (tmpId > maxId) ? tmpId : maxId;
+                } else {
+                    System.out.println("Invalid route '" + r + "' ignored");
+                }
+
             }
             CollectionHandler.setRoutes(out);
             Route.updateInstanceCounter(maxId+1);
             System.out.println("Successfully loaded!");
             if (out.isEmpty()) {System.out.println("Warning: save file was empty.");}
         } catch (JsonProcessingException e) {
+                System.out.println(e.getMessage());
                 System.out.println("Save file corrupt!");
         } finally { Route.isLoading = false; }
 

@@ -26,7 +26,6 @@ public class PSZHCommand implements Command {
                         ##      ##    ####           ## ## ##\s
                         ##      ##     #########    ### ## ###
                         ##      ##       #######    ##  ##  ##""");
-
     }
 
 

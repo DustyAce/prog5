@@ -24,8 +24,15 @@ public class Location {
         this.name = InputHandler.stringInput("Location name", false);
     }
 
+    boolean validate() {
+        return (y != null
+                && z != null
+                && name != null
+                && !name.isBlank());
+    }
+
     @Override
     public String toString() {
-        return name;
+        return String.format("%s: (x: %s, y: %s, z: %s)", name, x, y, z);
     }
 }

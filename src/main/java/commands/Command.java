@@ -1,11 +1,14 @@
 package commands;
 
+import elements.Route;
+
 /**
  * Command interface
  */
 public interface Command {
     /**
      * Execute the command
+     *
      * @param args command arguments
      */
     public void execute(String... args);
@@ -15,4 +18,6 @@ public interface Command {
      * @return description
      */
     public String desc();
+
+    default public void undo(Route... routes) {}
 }
