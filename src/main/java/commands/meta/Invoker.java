@@ -16,9 +16,9 @@ public class Invoker {
     static HashMap<String, Command> commands = new HashMap<>();
     static ArrayDeque<String> history_old = new ArrayDeque<>();
 
-    static Stack<Command> commandHistory = new Stack<>();
+    static Stack<HistoryEntry> commandHistory = new Stack<>();
     static Stack<Route[]> routeHistory = new Stack<>();
-    static Stack<Command> commandUndone = new Stack<>();
+    static Stack<HistoryEntry> commandUndone = new Stack<>();
     static Stack<Route[]> routeUndone = new Stack<>();
 
     public static boolean historyWritable = true;
@@ -68,7 +68,7 @@ public class Invoker {
     public static void executeCommand(String name, String... args) {
         Command c = commands.get(name);
         c.execute(args);
-        addToCommandHistory(c);
+        addToCommandHistory(c, args);
         if ( !(c instanceof UndoCommand || c instanceof RedoCommand) ) {
             commandUndone.clear();
             routeUndone.clear();
@@ -89,9 +89,9 @@ public class Invoker {
         }
     }
 
-    private static void addToCommandHistory(Command c) {
+    private static void addToCommandHistory(Command c, String... args) {
         if ( !(c instanceof UndoCommand || c instanceof RedoCommand) ) {
-            commandHistory.push(c);
+            commandHistory.push( new HistoryEntry(c, args));
         }
     }
 
@@ -101,8 +101,9 @@ public class Invoker {
 
     public static void undo() {
         try {
-            Command c = commandHistory.pop();
-            commandUndone.push(c);
+            HistoryEntry h = commandHistory.pop();
+            Command c = h.command();
+            commandUndone.push(h);
             if (c instanceof Undoable) {
                 routeUndone.push(routeHistory.pop());
                 ((Undoable) c).undo(routeUndone.peek());
@@ -115,11 +116,14 @@ public class Invoker {
 
     public static void redo() {
         try {
-            Command c = commandUndone.pop();
-            commandHistory.push(c);
+            HistoryEntry h = commandUndone.pop();
+            Command c = h.command();
+            commandHistory.push(h);
             if (c instanceof Undoable) {
                 routeHistory.push(routeUndone.pop());
                 ((Undoable) c).redo(routeHistory.peek());
+            } else {
+                c.execute(h.args());
             }
             OutputHandler.message("- redone '" + c.getName() + "'");
         } catch (EmptyStackException e) {
@@ -134,7 +138,7 @@ public class Invoker {
         return history_old;
     }
 
-    public static Stack<Command> getHistory() {
+    public static Stack<HistoryEntry> getHistory() {
         return commandHistory;
     }
 

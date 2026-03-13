@@ -7,5 +7,4 @@ public interface Undoable {
     public void redo(Route... routes);
 }
 
-//TODO: make this crap work w/ execute_command and update
-// for update: need to add .clone()
+//TODO: make this crap work w/ execute_command
